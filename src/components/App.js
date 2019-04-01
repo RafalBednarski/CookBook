@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from './Form';
+import Recipes from './Recipes';
 
 const API_KEY = 'f3ff197056d60457fe43970181456e38';
 
@@ -11,18 +12,21 @@ class App extends React.Component {
         event.preventDefault();
 
         const recipeName = event.target.elements.recipeName.value;
-        const api_call = await fetch(`https://www.food2fork.com/api/search?key=${API_KEY}&q=shredded%20chicken&count=10`);
+        const api_call = await fetch(`https://cors-anywhere.herokuapp.com/https://www.food2fork.com/api/search?key=${API_KEY}&q=${recipeName}&count=10`);
 
         const data = await api_call.json();
-        console.log(data);
+        this.setState({recipes: data.recipes});
+
+        console.log(this.state.recipes);
     }
 
     render() {
         return (
             <div>
-                <Form getRecipe={this.getRecipe}/>
+                <Form getRecipe={this.getRecipe} />
+                <Recipes recipes={this.state.recipes} />
             </div>
-        )
+        );
     }
 }
 
